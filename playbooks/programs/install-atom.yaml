@@ -1,0 +1,41 @@
+---
+- hosts: localhost
+  connection: local
+  become: yes
+  vars_files:
+    - ../../vars/default.yaml
+
+  tasks:
+    - name: Install aptitude using apt
+      apt: name=aptitude state=latest update_cache=yes force_apt_get=yes
+
+  
+    - name: Add Atom GPG key
+      apt_key:
+        url: "{{ atom_gpg_url }}"
+        state: present
+
+    - name: Add Atom repository
+      apt_repository:
+        repo: "{{ atom_repo }}"
+        state: present
+
+    - name: Install Extentions
+      command: apm install {{ atom_packges }}
+      with_items: "{{ atom_pkg }}"
+
+    - name: Install Python Atom module
+      pip:
+        name: Atom
+
+    - name: Add adminstrator to Atom group
+      user:
+        name: "{{ admin_user }}"
+        groups: Atom
+        append: yes
+
+    - name: Install Atom Compose
+      get_url:
+        url: "{{ Atom_compose_url }}"
+        dest: /usr/local/bin/Atom-compose
+        mode: u+x,g+x,o+x

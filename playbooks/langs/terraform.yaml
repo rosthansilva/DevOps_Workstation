@@ -1,0 +1,29 @@
+---
+- hosts: localhost
+  connection: local
+  remote_user: "{{ admin_user }}"
+  vars_files:
+    - ../vars/default.yaml
+  become: true
+  become_method: sudo
+  gather_facts: no
+  tasks:
+    - name: Install pip on the servers
+      yum:
+        name: python-pip
+        state: latest
+        update_cache: true
+      become: true
+
+    - name: Install pip3 on the servers
+      yum:
+        name: python3-pip
+        state: latest        
+      become: true
+
+    - name: Ensure ansible is installed on servers
+      pip:
+        name: ansible
+
+    - name: Executing ansible-pull on servers
+      command: ansible-pull -U https://gitlab.com/hemanth22/ansible-pull-terraform.git

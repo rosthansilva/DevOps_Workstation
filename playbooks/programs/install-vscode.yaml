@@ -1,0 +1,49 @@
+---
+- hosts: localhost
+  connection: local
+  become: yes
+  vars_files:
+    - ../vars/default.yaml
+  
+    - name: Update software cache for apt-get
+      become: True
+      apt:
+        update_cache: yes
+      changed_when: False
+
+    - name: Install required software
+      apt:
+        name: "{{ item }}"
+        state: present
+      loop: "{{ vscode_ubuntu_required_software | flatten }}"
+
+    - name: Download ASC file
+      apt_key:
+        url: "{{ vscode_microsoft_asc_url }}"
+        state: present
+
+    - name: Copy repo list
+      ansible.builtin.copy:
+        src: files/vscode.list
+        dest: /etc/apt/sources.list.d/vscode.list
+        mode: '0644'
+
+    - name: Update software cache for apt-get again
+      become: True
+      apt:
+        update_cache: yes
+      changed_when: False
+
+    - name: Install Visual Studio Code
+      apt:
+        name: code
+        state: present
+
+
+    - name: Install extensions
+      command: "/usr/bin/code --install-extension {{ item }}"
+      loop: "{{ vscode_extensions | flatten }}"
+      become: yes
+      become_user: "{{ config_owner }}"
+      when: vscode_use_extensions is defined and vscode_use_extensions
+      changed_when: False

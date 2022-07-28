@@ -1,0 +1,102 @@
+---
+admin_user: null
+docker_required_packages:
+  - "apt-transport-https"
+  - "ca-certificates"
+  - "curl"
+  - "gnupg-agent"
+  - "software-properties-common"
+  - "python3-pip"
+  - "python3-setuptools"
+docker_required_packages:
+  - virtualbox 
+  - virtualbox-ext-pack
+docker_gpg_url: https://download.docker.com/linux/ubuntu/gpg
+atom_gpg_url: https://packagecloud.io/AtomEditor/atom/gpgkey
+docker_repo: deb https://download.docker.com/linux/ubuntu jammy stable
+atom_repo: deb [arch=amd64] https://packagecloud.io/AtomEditor/atom/any/ any main
+docker_packges:
+  - "docker-ce"
+  - "docker-ce-cli"
+  - "containerd.io"
+  - "docker-compose-plugin"
+  - "git"
+  - "wget"
+  - "curl"
+atom_pkg:
+  - minimap
+  - TODO-Show
+  - color-picker
+  - Pigments
+  - file-icons
+  - language-terraform
+  - language-docker
+  - language-ansible
+  - platformio-ide-terminal
+  - nord-atom-ui
+  - nord-atom-syntax
+docker_compose_url: https://github.com/docker/compose/releases/download/v2.7.0/docker-compose-linux-x86_64
+
+# AZ CLI Variables
+azure_package_name: azure-cli
+repo_key_url: https://packages.microsoft.com/keys/microsoft.asc
+apt_key_server: packages.microsoft.com
+apt_key_id: 52E16F86FEE04B979B07E28DB02C46DF417A0893
+
+# VSCODE VARIABLES
+
+---
+config_owner: "{{ ansible_user_id }}"
+config_owner_primary_group: "{{ config_owner }}"
+
+vscode_use_extensions: True
+vscode_extensions:
+  - 'byi8220.indented-block-highlighting'
+  - 'CoenraadS.bracket-pair-colorizer-2'
+  - 'DavidAnson.vscode-markdownlint'
+  - 'DotJoshJohnson.xml'
+  - 'eamodio.gitlens'
+  - 'golang.go'
+  - 'hashicorp.terraform'
+  - 'himanoa.Python-autopep8'
+  - 'HookyQR.beautify'
+  - 'iciclesoft.workspacesort'
+  - 'jtr.vscode-position'
+  - 'marlon407.code-groovy'
+  - 'ms-azuretools.vscode-azurefunctions'
+  - 'ms-azuretools.vscode-docker'
+  - 'ms-dotnettools.csharp'
+  - 'ms-kubernetes-tools.vscode-kubernetes-tools'
+  - 'ms-python.python'
+  - 'ms-python.vscode-pylance'
+  - 'ms-toolsai.jupyter'
+  - 'ms-vscode-remote.remote-containers'
+  - 'ms-vscode.azure-account'
+  - 'ms-vscode.azurecli'
+  - 'ms-vscode.hexeditor'
+  - 'patcx.vscode-nuget-gallery'
+  - 'redhat.vscode-yaml'
+  - 'rokoroku.vscode-theme-darcula'
+  - 'samuelcolvin.jinjahtml'
+  - 'tuxtina.json2yaml'
+  - 'wesbos.theme-cobalt2'
+  - 'yzhang.markdown-all-in-one'
+  - 'ZainChen.json'
+
+vscode_use_config: True
+
+vscode_microsoft_asc_url: https://packages.microsoft.com/keys/microsoft.asc
+
+vscode_ubuntu_required_software:
+  - gpg
+  - libasound2
+  - libxshmfence-dev
+
+#Ms Teams variables
+
+#Nords
+
+wallpeaper_number: 01
+
+
+

@@ -1,0 +1,14 @@
+---
+- hosts: localhost
+  connection: local
+  tasks:
+    
+    - name: Check for Python
+      raw: test -e /usr/bin/python3
+      changed_when: false
+      failed_when: false
+      register: check_python
+
+    - name: Install Python
+      command: apt -y install python3
+      when: check_python.rc != 0
