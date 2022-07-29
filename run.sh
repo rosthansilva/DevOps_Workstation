@@ -15,16 +15,36 @@ echo "Instalando Ansible e ssh-pass"
 
 
 apt-get update
+apt upgrade -y
+packages=(
+    "guake"
+    "tmux"
+    "tilix"
+    "python3-apt"
+    "ansible"
+    "git"
+    "sshpass"
+    "ssh"
+    "wget"
+    "curl"
+    "virtualbox"
+    "virtualbox-ext-pack"
+    "thunderbird"
+    "gimp"
+    "flameshot")
 
-packages=( "python3-apt" "ansible" "git" "sshpass" "ssh" "wget" "curl")
+echo "Verificando Reboot" ; sleep 2
+
+[ -f /var/run/reboot-required ] && echo "Reboot Necessário" && sudo reboot -f
 
 for i in "${packages[@]}"
 do
   if ! [ -x "$(command -v $i)" ]; then
     echo "== No Ok = Instalando -  $i ==" >&1
     apt-get -y install $i
-    echo " " && echo " " && sleep 2
+
   else
+
     echo "== Pkg Ok = $i - already installed =="
     echo " " && echo " " && sleep 2
   fi
@@ -43,3 +63,6 @@ echo  " " && echo " "
     systemctl start $SERVICE
     systemctl enable $SERVICE
   fi
+
+ansible-playbook --connection=local --inventory 127.0.0.1, --limit 127.0.0.1 main.yaml -i ansible_hosts -e ansible_python_interpreter=/usr/bin/python3
+minikube start

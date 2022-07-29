@@ -1,0 +1,19 @@
+---
+- hosts: localhost
+  connection: local
+  become: yes
+  vars:
+    admin_user : null
+
+  tasks:
+
+    - name: Baixa Repo de guake
+      command: git clone https://github.com/arcticicestudio/nord-guake.git  /tmp/nord-guake
+      args:
+        chdir: /tmp/
+
+    - name: Instala palleta Nord no Guake
+      command:  /tmp/nord-guake/src/sh/nord.sh
+
+    - name: Install Tmux
+      command: git clone https://github.com/arcticicestudio/nord-tmux.git  /home/{{ admin_user }}/.tmux/themes/nord-tmux

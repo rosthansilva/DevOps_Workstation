@@ -1,8 +1,11 @@
 ---
 - hosts: all
-  become: true
+  #become: true
+  #become_method: sudo
+  #remote_user: rosthansilva
+  become_user: rosthansilva   
   vars:
-    - admin_user: rosthansilva
+    - admin_user: null
   tasks:
     - name: Install ZSH
       become: yes
@@ -10,12 +13,24 @@
         name: zsh
         state: latest
 
-    - name: Install Oh-My-zsh for users
-      git:
-        repo: "https://github.com/robbyrussell/oh-my-zsh"
-        version: master
-        dest: "/home/{{ admin_user }}/.oh-my-zsh"
-        update: no
+    - name : Dell Oh My ZSH anterior
+      command: rm -rf /home/{{ admin_user }}/.oh-my-zsh/
+
+    - name: Download zsh installer
+      get_url:
+        url: https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh
+        dest: /tmp/zsh-installer.sh
+        mode: u=rwx,g=rx,o=rx
+        owner: "{{ admin_user }}"
+
+    - name: Execute the zsh-installer.sh
+      shell: /tmp/zsh-installer.sh
+
+    - name: Remove the zsh-installer.sh
+      file:
+        path: /tmp/zsh-installer.sh
+        state: absent
+
 
     - name: create fira code script
       copy:
@@ -45,15 +60,23 @@
     - name: Run Script
       command: /tmp/firacode.sh
 
-    - name: instalando Extenções do ZSH
+    - name: instalando Extenções do ZSH fzf
       shell: |
-        git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
         git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
         ~/.fzf/install
-        git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
-        git clone https://github.com/supercrabtree/k $ZSH_CUSTOM/plugins/k
       args:
         chdir: /tmp/
+
+    - name: Install Oh-My-zsh for users
+      git:
+        repo: "{{ item.repo }}"
+        dest: "/home/{{ admin_user }}/.oh-my-zsh/{ item.dir }"
+        update: no
+      loop:
+        - { repo: 'https://github.com/zsh-users/zsh-syntax-highlighting.git', dir: 'custom/plugins/zsh-syntax-highlighting' }
+        - { repo: 'https://github.com/zsh-users/zsh-autosuggestions', dir: 'custom/plugins/zsh-autosuggestions' }
+        - { repo: 'https://github.com/supercrabtree/k', dir: 'custom/plugins/k' }
+        - { repo: 'https://github.com/denysdovhan/spaceship-prompt.gi', dir: 'themes/spaceship-prompt' }
 
     - name: Set default shell for users
       become: yes
@@ -61,39 +84,7 @@
         name: '{{ admin_user }}'
         shell: /bin/zsh
 
-    - name: Replace a localhost entry with our own
-      lineinfile:
-        path: /home/{{ admin_user }}/.zshrc
-        regexp: '^plugins=(git)'
-        line: 'plugins=( git zsh-syntax-highlighting fzf zsh-autosuggestions k docker kubernetes kubectl )'
-        owner: root
-        group: root
-        mode: '0644'
-
-    - name: "Adiciona Linhas se não existem"
-      lineinfile:
-        path:  /home/{{ admin_user }}/.zshrc
-        line: "compinit"
-        state: present
-        backup: yes
-      register: compinit_out
-
-    - name: Verify zsh "autoload -Uz compinit" option
-      lineinfile:
-        path:  /home/{{ admin_user }}/.zshrc
-        line: "autoload -Uz compinit"
-        state: present
-        backup: yes
-      register: compinit_out
-
-    - name: Instala Plugin no ZSH
-      command: source <(kubectl completion zsh)
-
-    - name: CMD Fix
-      command : alias k="kubectl"
-
     - name : Instalando Extenção
-      shell : echo "source <(kubectl completion zsh | sed 's/kubectl/k/g')" > /home/"{{ admin_user }}"/.zshrc
-
-    - name: Minikube Starting
-      command: minikube start
+      template :
+        src: ./zsh.template
+        dest: "/home/{{ admin_user }}/.zshrc"

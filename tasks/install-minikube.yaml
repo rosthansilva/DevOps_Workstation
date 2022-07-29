@@ -1,0 +1,29 @@
+---
+- hosts: all
+  become: true
+  vars:
+    - admin_user: null
+    - minikube_required_packages:
+      - apt-transport-https
+      - virtualbox
+      - virtualbox-ext-pack
+    - minikube_url: https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
+
+  tasks:
+    - name: Install aptitude using apt
+      apt: name=aptitude state=latest update_cache=yes force_apt_get=yes
+
+    - name: Install required system packages for Minikube
+      apt: name={{ minikube_required_packages }} state=latest update_cache=yes
+
+    - name: Install Minikube
+      get_url:
+        url: "{{ minikube_url }}"
+        dest: /usr/local/bin/minikube
+        mode: u+x,g+x,o+x
+
+    - name: Download the latest release with the command
+      shell: curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+
+    - name: Install Kubectl
+      command: sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl

@@ -1,11 +1,29 @@
 - hosts: localhost
-  #vars_files:
+  vars:
+    administrador : rosthansilva
   #  - ./vars/default.yaml
   tasks:
     - debug:
         msg: play1
 
-- name: Include a play after another play
-  import_playbook: tasks/docker.yaml
-- name : Oh my zsh
+    - name : => Global Vars | - Setando Fatcts
+      set_fact:
+         admin_user: "{{ administrador }}"
+
+#- name: => Docker | - Install Docker
+#  import_playbook: tasks/docker.yaml
+
+#- name:  => Kubernetes | - Install Minikube
+#  import_playbook: tasks/playbooks/programs/install-minikube.yaml
+#  vars:
+#    admin_user: "{{ administrador }}"
+
+- name : => Shell  | - Oh my zsh!
   import_playbook: tasks/playbooks/custom/install-oh-my-zsh.yaml
+#  vars:
+#    admin_user: "{{ administrador }}"
+
+#- name : => Shell & Terminal | - Instala e Customiza Tmux & Guake
+#  import_playbook: tasks/playbooks/custom/tmux-guake.yaml
+#  vars:
+#    admin_user: "{{ administrador }}"

@@ -1,2 +1,0 @@
-[ DevOps_Workstation ]
-devops_workstation.local  ansible_connection=local

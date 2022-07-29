@@ -2,7 +2,7 @@
 - hosts: all
   become: true
   vars:
-    - admin_user: rosthansilva
+    - admin_user: null
 
   tasks:
     - name: Install required system packages
