@@ -3,14 +3,14 @@
   connection: local
   become: yes
   vars_files:
-    - ../vars/default.yaml
+    - ../../vars/default.yaml
 
   tasks:
     - name: Install Cursor theme
-      command: 
-  
+      command:
+
     - name: Install Cursor Themes
-      command: chdir=/tmp {{ items }}  
+      command: chdir=/tmp {{ items }}
       with_items: 
         - git clone https://github.com/alvatip/Nordzy-cursors
         - /tmp/Nordzy-cursors/install.sh
@@ -22,7 +22,7 @@
         owner: "{{ admin_user }}"
         group: "{{ admin_user }}"
         mode: 775
-  
+
     - name: Copia Temas para Diretório Customizado
       copy:
         src: custom/.themes
@@ -30,7 +30,7 @@
         owner: "{{ admin_user }}"
         group: "{{ admin_user }}"
         mode: 775
-  
+
     - name: Copia Wallpeaper para Diretório Customizado
       copy:
         src: custom/Wallpeapers
@@ -38,10 +38,9 @@
         owner: "{{ admin_user }}"
         group: "{{ admin_user }}"
         mode: 775
-  
+
     - name: Seta wallpeaper
       command:  gsettings get org.gnome.desktop.background picture-uri 'file:///home/{{ admin_user }}/.wallpeapers/{{ wallpeaper_number }}.jpg
 
     - name: configura janela
       command: gsettings set org.gnome.desktop.wm.preferences button-layout "close,minimize,maximize:"
-  

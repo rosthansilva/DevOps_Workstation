@@ -1,4 +1,4 @@
----
+ansible_connection: ssh
 admin_user: null
 docker_required_packages:
   - "apt-transport-https"
@@ -9,7 +9,7 @@ docker_required_packages:
   - "python3-pip"
   - "python3-setuptools"
 docker_required_packages:
-  - virtualbox 
+  - virtualbox
   - virtualbox-ext-pack
 docker_gpg_url: https://download.docker.com/linux/ubuntu/gpg
 atom_gpg_url: https://packagecloud.io/AtomEditor/atom/gpgkey
@@ -44,8 +44,6 @@ apt_key_server: packages.microsoft.com
 apt_key_id: 52E16F86FEE04B979B07E28DB02C46DF417A0893
 
 # VSCODE VARIABLES
-
----
 config_owner: "{{ ansible_user_id }}"
 config_owner_primary_group: "{{ config_owner }}"
 
@@ -97,6 +95,3 @@ vscode_ubuntu_required_software:
 #Nords
 
 wallpeaper_number: 01
-
-
-

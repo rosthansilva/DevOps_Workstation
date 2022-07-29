@@ -1,0 +1,11 @@
+- hosts: localhost
+  #vars_files:
+  #  - ./vars/default.yaml
+  tasks:
+    - debug:
+        msg: play1
+
+- name: Include a play after another play
+  import_playbook: tasks/docker.yaml
+- name : Oh my zsh
+  import_playbook: tasks/playbooks/custom/install-oh-my-zsh.yaml

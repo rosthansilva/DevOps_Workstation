@@ -3,7 +3,7 @@
   connection: local
   become: yes
   vars_files:
-    - ../vars/default.yaml
+    - ../../vars/default.yaml
 
   tasks:
     - name: instala guake
@@ -14,7 +14,7 @@
       chdir: /tmp/
 
     - name: Instala palleta Nord no Guake
-      command:  /tmp/nord-guake/src/sh/nord.sh  
-    
+      command:  /tmp/nord-guake/src/sh/nord.sh
+
     - name: Install Tmux
       command: git clone https://github.com/arcticicestudio/nord-tmux.git  /home/{{ admin_user }}/.tmux/themes/nord-tmux

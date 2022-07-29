@@ -3,18 +3,18 @@
   connection: local
   become: yes
   vars_files:
-    - ../vars/default.yaml
+    - ../../vars/default.yaml
 
 
-  
+
   tasks:
-  
+
     - name: Add nginx stable repository from PPA and install its signing key on Ubuntu target
-      ansible.builtin.apt_repository: 
+      ansible.builtin.apt_repository:
         validate_certs: no
         state: present
         repo: 'ppa:inkscape.dev/stable'
-    
-  
+
+
     - name: Instala Inkscape Via terminal
       apt: name=inkscape state=latest update_cache=yes force_apt_get=yes

@@ -3,7 +3,7 @@
   connection: local
   become: yes
   vars_files:
-    - ../vars/default.yaml
+    - ../../vars/default.yaml
 
   tasks:
     - name: Install aptitude using apt

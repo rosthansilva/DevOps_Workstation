@@ -3,8 +3,8 @@
   connection: local
   become: yes
   vars_files:
-    - ../vars/default.yaml
-  
+    - ../../vars/default.yaml
+
     - name: Update software cache for apt-get
       become: True
       apt:

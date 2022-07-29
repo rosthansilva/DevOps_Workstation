@@ -9,7 +9,7 @@
     - name: Install aptitude using apt
       apt: name=aptitude state=latest update_cache=yes force_apt_get=yes
 
-  
+
     - name: Add Atom GPG key
       apt_key:
         url: "{{ atom_gpg_url }}"
